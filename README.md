@@ -29,7 +29,7 @@ This will be the NFT contract, and the place you'll add challenge contracts to.
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import {CTFRegistry} from "../../src/protocol/CTFRegistry.sol";
+import {CTFRegistry} from "lib/ctf/src/protocol/CTFRegistry.sol";
 
 contract SimpleCTFRegistry is CTFRegistry {
     constructor() CTFRegistry("Our CTF", "CTF") {}
@@ -49,7 +49,7 @@ You'll need to add the following functions:
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import {Challenge} from "../../src/protocol/Challenge.sol";
+import {Challenge} from "lib/ctf/src/protocol/Challenge.sol";
 
 contract SimpleCTFChallenge is Challenge {
     string constant BLANK_TWITTER_HANDLE = "";
