@@ -1,66 +1,97 @@
-## Foundry
+# CTF
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A minimal repo to create capture the flag (CTF) challenges. 
 
-Foundry consists of:
+# Getting Started
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Requirements
 
-## Documentation
+-   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)  
+    -   You'll know you've done it right if you can run `git --version`
+-   [Foundry / Foundryup](https://github.com/gakonst/foundry)
+    -   This will install `forge`, `cast`, and `anvil`
+    -   You can test you've installed them right by running `forge --version` and get an output like: `forge 0.2.0 (f016135 2022-07-04T00:15:02.930499Z)`
+    -   To get the latest of each, just run `foundryup`
 
-https://book.getfoundry.sh/
+## Quickstart
 
-## Usage
+1. Install the package into your project.
 
-### Build
-
-```shell
-$ forge build
+```
+forge install cyfrin/ctf --no-commit
 ```
 
-### Test
+2. Create a registration CTF contract
 
-```shell
-$ forge test
+This will be the NFT contract, and the place you'll add challenge contracts to. 
+
+```javascript
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+import {CTFRegistry} from "../../src/protocol/CTFRegistry.sol";
+
+contract SimpleCTFRegistry is CTFRegistry {
+    constructor() CTFRegistry("Our CTF", "CTF") {}
+}
 ```
 
-### Format
+3. Create a challenge contract
 
-```shell
-$ forge fmt
+You'll need to add the following functions:
+
+- `solveChallenge()` - This is the *optional* function that will be called when a user solves the challenge. The more important part, is that you need something to call `_updateAndRewardSolver()` which will update the user's NFT with the challenge they solved.
+- `attribute()` - This is the attribute that will be shown on the NFT. 
+- `description()` - This is the description that will be shown on the NFT.
+- `specialImage()` - This is the image that will be shown on the NFT. There is a base NFT that will be used if this is left blank. 
+
+```javascript
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+import {Challenge} from "../../src/protocol/Challenge.sol";
+
+contract SimpleCTFChallenge is Challenge {
+    string constant BLANK_TWITTER_HANDLE = "";
+
+    constructor(address registry) Challenge(registry) {}
+
+    function solveChallenge() external {
+        _updateAndRewardSolver(BLANK_TWITTER_HANDLE);
+    }
+
+    function attribute() external pure override returns (string memory) {
+        return "Getting learned!";
+    }
+
+    function description() external pure override returns (string memory) {
+        return "This is a simple CTF challenge.";
+    }
+
+    function specialImage() external pure returns (string memory) {
+        return BLANK_TWITTER_HANDLE;
+    }
+}
+
 ```
 
-### Gas Snapshots
 
-```shell
-$ forge snapshot
+4. Deploy, and add the contract to the registry
+
+```javascript
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
+
+import {Script} from "forge-std/Script.sol";
+import {SimpleCTFChallenge} from "../test/mocks/SimpleCTFChallenge.sol";
+import {SimpleCTFRegistry} from "../test/mocks/SimpleCTFRegistry.sol";
+
+contract MockDeploy is Script {
+    function run() external {
+        SimpleCTFRegistry registry = new SimpleCTFRegistry();
+        SimpleCTFChallenge challenge = new SimpleCTFChallenge(address(registry));
+        registry.addChallenge(address(challenge));
+    }
+}
 ```
 
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
