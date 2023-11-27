@@ -25,7 +25,7 @@ abstract contract CTFRegistry is ERC721, Ownable, ICTFRegistry {
     string internal s_baseTokenImageUri = "ipfs://QmZg79jdDNBTi3fxwnjXTvbM9Gtd1C84Axo55Ht2kYCeDH";
 
     uint256 private s_tokenCounter;
-    mapping(uint256 => address) private s_tokenIdToChallengeContract;
+    mapping(uint256 tokenId => address challengeContract) private s_tokenIdToChallengeContract;
     mapping(address user => mapping(address challenge => bool hasSolved)) private s_userToChallengeToHasSolved;
     address[] private s_challengeContracts;
 
