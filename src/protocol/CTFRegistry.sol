@@ -46,7 +46,6 @@ abstract contract CTFRegistry is ERC721, Ownable, ICTFRegistry {
         for (uint256 i; i < s_challengeContracts.length; i++) {
             if (s_challengeContracts[i] == contractAddress) {
                 _;
-                return;
             }
         }
         revert CTFRegistry__NotChallengeContract();
