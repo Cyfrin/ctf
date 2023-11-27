@@ -7,7 +7,8 @@ import {SimpleCTFRegistry} from "../mocks/SimpleCTFRegistry.sol";
 import {Test, console2} from "forge-std/Test.sol";
 
 contract SimpleCTFChallengeTest is Test {
-    SimpleCTFChallenge challenge;
+    SimpleCTFChallenge challengeOne;
+    SimpleCTFChallenge challengeTwo;
     SimpleCTFRegistry registry;
 
     address owner = makeAddr("owner");
@@ -16,15 +17,25 @@ contract SimpleCTFChallengeTest is Test {
     function setUp() public {
         vm.startPrank(owner);
         registry = new SimpleCTFRegistry();
-        challenge = new SimpleCTFChallenge(address(registry));
-        registry.addChallenge(address(challenge));
+        challengeOne = new SimpleCTFChallenge(address(registry));
+        challengeTwo = new SimpleCTFChallenge(address(registry));
+        registry.addChallenge(address(challengeOne));
+        registry.addChallenge(address(challengeTwo));
         vm.stopPrank();
     }
 
     function testSolveChallengeMintsNFT() public {
         vm.startPrank(user);
-        challenge.solveChallenge();
+        challengeOne.solveChallenge();
         vm.stopPrank();
         assertEq(registry.balanceOf(user), 1);
+    }
+
+    function testSolveMultipleChallenges() public {
+        vm.startPrank(user);
+        challengeOne.solveChallenge();
+        challengeTwo.solveChallenge();
+        vm.stopPrank();
+        assertEq(registry.balanceOf(user), 2);
     }
 }
