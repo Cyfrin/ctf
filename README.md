@@ -1,6 +1,6 @@
 # CTF
 
-A minimal repo to create capture the flag (CTF) challenges. 
+A minimal repo to help create capture the flag (CTF) challenges. 
 
 # Getting Started
 

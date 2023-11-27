@@ -136,7 +136,6 @@ abstract contract CTFRegistry is ERC721, Ownable, ICTFRegistry {
     //////////////////////////////
     // Functions - View & Pure  //
     //////////////////////////////
-
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         IChallenge courseChallenge = IChallenge(s_tokenIdToChallengeContract[tokenId]);
         // check to see if the challenge has a special image using a string comparison

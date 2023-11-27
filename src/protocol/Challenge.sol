@@ -27,6 +27,10 @@ abstract contract Challenge is IChallenge, Ownable {
         ICTFRegistry(i_registry).mintNft(msg.sender, twitterHandleOfSolver);
     }
 
+    /* 
+     * @notice if a description is supposed to be per-user unique, then this function should overriden.
+     * @param user - The user for which the description is being requested.
+     */
     function extraDescription(address /* user */ ) external view virtual returns (string memory) {
         return BLANK_SPECIAL_DESCRIPTION;
     }
