@@ -1,0 +1,13 @@
+{
+    "name": "ctf",
+    "license": "MIT",
+    "version": "0.0.4",
+    "description": "A minimal repo to create EVM/solidity capture the flags.",
+    "files": [
+        "src/**/*.sol"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cyfrin/ctf.git"
+    }
+}
