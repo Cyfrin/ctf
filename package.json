@@ -9,5 +9,8 @@
     "repository": {
         "type": "git",
         "url": "git+https://github.com/cyfrin/ctf.git"
+    },
+    "dependencies": {
+        "ctf": "https://github.com/Cyfrin/ctf"
     }
 }

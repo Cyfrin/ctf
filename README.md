@@ -21,9 +21,17 @@ A minimal repo to help create capture the flag (CTF) challenges.
 forge install cyfrin/ctf --no-commit
 ```
 
+or for Hardhat
+
+```
+npm install https://github.com/Cyfrin/ctf
+```
+
 2. Create a registration CTF contract
 
 This will be the NFT contract, and the place you'll add challenge contracts to. 
+
+*Note: If using hardhat, you'll need to import from `node_modules` instead of `lib`*
 
 ```javascript
 // SPDX-License-Identifier: MIT
