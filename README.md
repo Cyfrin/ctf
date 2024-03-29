@@ -1,3 +1,5 @@
+> :exclamation: **IMPORTANT:** This codebase has not been audited, use at your own risk. 
+
 # CTF
 
 A minimal repo to help create capture the flag (CTF) challenges. 
