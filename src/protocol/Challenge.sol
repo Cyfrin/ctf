@@ -23,7 +23,7 @@ abstract contract Challenge is IChallenge, Ownable {
      * @param twitterHandleOfSolver - The twitter handle of the solver.
      * It can be left blank.
      */
-    function _updateAndRewardSolver(string memory twitterHandleOfSolver) internal {
+    function _updateAndRewardSolver(string memory twitterHandleOfSolver) internal virtual {
         ICTFRegistry(i_registry).mintNft(msg.sender, twitterHandleOfSolver);
     }
 
