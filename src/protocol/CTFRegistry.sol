@@ -19,9 +19,9 @@ import {IChallenge} from "../interfaces/IChallenge.sol";
  * Each challenge needs to be added to this contract, and only then can an NFT be minted.
  */
 abstract contract CTFRegistry is ERC721, Ownable, ICTFRegistry {
-    //////////////////////
-    // State Variables  //
-    //////////////////////
+    /*//////////////////////////////////////////////////////////////
+                            STATE VARIABLES
+    //////////////////////////////////////////////////////////////*/
     uint256 private s_tokenCounter;
     mapping(uint256 tokenId => address challengeContract) private s_tokenIdToChallengeContract;
     mapping(address user => mapping(address challenge => bool hasSolved)) private s_userToChallengeToHasSolved;
@@ -29,17 +29,17 @@ abstract contract CTFRegistry is ERC721, Ownable, ICTFRegistry {
 
     string private constant DEFAULT_ATTRIBUTE = "Getting learned!";
 
-    /////////////
-    // Events  //
-    /////////////
+    /*//////////////////////////////////////////////////////////////
+                                 EVENTS
+    //////////////////////////////////////////////////////////////*/
     event ChallengeAdded(address challengeContract);
     event ChallengeReplaced(address oldChallenge, address newChallenge);
     event BaseTokenImageUriChanged(string newUri);
     event ChallengeSolved(address solver, address challenge, string twitterHandle);
 
-    ////////////////
-    // Modifiers  //
-    ////////////////
+    /*//////////////////////////////////////////////////////////////
+                               MODIFIERS
+    //////////////////////////////////////////////////////////////*/
     modifier onlyChallengeContract(address contractAddress) {
         bool found = false;
         for (uint256 i; i < s_challengeContracts.length; i++) {
@@ -55,14 +55,10 @@ abstract contract CTFRegistry is ERC721, Ownable, ICTFRegistry {
         }
     }
 
-    //////////////////////////////
-    // Functions - Constructor  //
-    //////////////////////////////
+    /*//////////////////////////////////////////////////////////////
+                               FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
     constructor(string memory ctfName, string memory symbol) ERC721(ctfName, symbol) Ownable(msg.sender) {}
-
-    ////////////////////////////
-    // Functions - External  //
-    ///////////////////////////
 
     /*
      * @dev adds a contract to the list of challenge contracts.
@@ -102,29 +98,17 @@ abstract contract CTFRegistry is ERC721, Ownable, ICTFRegistry {
             revert CTFRegistry__YouAlreadySolvedThis();
         }
         uint256 tokenId = s_tokenCounter;
+        s_tokenCounter = tokenId + 1;
         s_tokenIdToChallengeContract[tokenId] = msg.sender;
         s_userToChallengeToHasSolved[receiver][msg.sender] = true;
-        _safeMint(receiver, tokenId);
         emit ChallengeSolved(receiver, msg.sender, twitterHandle);
-        s_tokenCounter = s_tokenCounter + 1;
+        _safeMint(receiver, tokenId);
         return tokenId;
     }
 
-    //////////////////////////
-    // Functions - Public  //
-    /////////////////////////
-
-    ///////////////////////////
-    // Functions - Internal  //
-    ///////////////////////////
-
-    ///////////////////////////
-    // Functions - Private  //
-    //////////////////////////
-
-    //////////////////////////////
-    // Functions - View & Pure  //
-    //////////////////////////////
+    /*//////////////////////////////////////////////////////////////
+                       FUNCTIONS - VIEW AND PURE
+    //////////////////////////////////////////////////////////////*/
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         IChallenge courseChallenge = IChallenge(s_tokenIdToChallengeContract[tokenId]);
         // check to see if the challenge has a special image using a string comparison

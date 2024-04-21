@@ -43,4 +43,15 @@ contract SimpleCTFChallengeTest is Test {
         vm.stopPrank();
         assertEq(registry.balanceOf(user), 2);
     }
+
+    function testAdminMintSolvers() public {
+        vm.startPrank(owner);
+        address[] memory solvers = new address[](2);
+        solvers[0] = makeAddr("solver1");
+        solvers[1] = makeAddr("solver2");
+        challengeOne.adminMintSolvers(solvers);
+        vm.stopPrank();
+        assertEq(registry.balanceOf(solvers[0]), 1);
+        assertEq(registry.balanceOf(solvers[1]), 1);
+    }
 }

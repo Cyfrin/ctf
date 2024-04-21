@@ -43,6 +43,16 @@ abstract contract Challenge is IChallenge, Ownable {
     }
 
     /*
+     * A lot of users have solved the challenges on different chains.
+     * This function allows the admin to mint the solvers from past challenges onto the registry.
+     */
+    function adminMintSolvers(address[] memory solvers) external onlyOwner {
+        for (uint256 i = 0; i < solvers.length; i++) {
+            ICTFRegistry(i_registry).mintNft(solvers[i], "");
+        }
+    }
+
+    /*
      * @param twitterHandleOfSolver - The twitter handle of the solver.
      * It can be left blank.
      */
