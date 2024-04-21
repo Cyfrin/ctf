@@ -24,6 +24,11 @@ contract SimpleCTFChallengeTest is Test {
         vm.stopPrank();
     }
 
+    function testRevertDeploymentOnAddressZeroRegistry() public {
+        vm.expectRevert(Challenge.Challenge__CantBeZeroAddress.selector);
+        new SimpleCTFChallenge(address(0));
+    }
+
     function testSolveChallengeMintsNFT() public {
         vm.startPrank(user);
         challengeOne.solveChallenge();

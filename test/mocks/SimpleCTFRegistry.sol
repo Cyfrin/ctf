@@ -5,4 +5,7 @@ import {CTFRegistry} from "../../src/protocol/CTFRegistry.sol";
 
 contract SimpleCTFRegistry is CTFRegistry {
     constructor() CTFRegistry("Our CTF", "CTF") {}
+
+    // Add this so forge coverage thinks this is a test and should skip
+    function test() public {}
 }

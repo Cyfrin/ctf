@@ -48,12 +48,14 @@ contract SimpleCTFRegistry is CTFRegistry {
 
 3. Create a challenge contract
 
-You'll need to add the following functions:
+You'll need to pass the following to the Challenge constructor:
 
-- `solveChallenge()` - This is the *optional* function that will be called when a user solves the challenge. The more important part, is that you need something to call `_updateAndRewardSolver()` which will update the user's NFT with the challenge they solved.
 - `attribute()` - This is the attribute that will be shown on the NFT. 
 - `description()` - This is the description that will be shown on the NFT.
-- `specialImage()` - This is the image that will be shown on the NFT. There is a base NFT that will be used if this is left blank. 
+- `imageUri()` - This is the image that will be shown on the NFT. 
+
+Then, finally, you'll have to add this function:
+- `solveChallenge()` - This is the *optional* function that will be called when a user solves the challenge. The more important part, is that you need something to call `_updateAndRewardSolver()` which will update the user's NFT with the challenge they solved.
 
 ```javascript
 // SPDX-License-Identifier: MIT
@@ -62,29 +64,17 @@ pragma solidity ^0.8.18;
 import {Challenge} from "lib/ctf/src/protocol/Challenge.sol";
 
 contract SimpleCTFChallenge is Challenge {
-    string constant BLANK_TWITTER_HANDLE = "";
+    string constant ATTRIBUTE = "Getting learned!";
+    string constant DESCRIPTION = "This is a simple CTF challenge.";
+    string constant IMAGE_URI = "ipfs://QmZg79jdDNBTi3fxwnjXTvbM9Gtd1C84Axo55Ht2kYCeDH";
 
-    constructor(address registry) Challenge(registry) {}
+    constructor(address registry) Challenge(registry, ATTRIBUTE, DESCRIPTION, IMAGE_URI) {}
 
-    function solveChallenge() external {
-        _updateAndRewardSolver(BLANK_TWITTER_HANDLE);
-    }
-
-    function attribute() external pure override returns (string memory) {
-        return "Getting learned!";
-    }
-
-    function description() external pure override returns (string memory) {
-        return "This is a simple CTF challenge.";
-    }
-
-    function specialImage() external pure returns (string memory) {
-        return BLANK_TWITTER_HANDLE;
+    function solveChallenge(string memory twitterHandle) external {
+        _updateAndRewardSolver(twitterHandle);
     }
 }
-
 ```
-
 
 4. Deploy, and add the contract to the registry
 

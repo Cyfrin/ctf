@@ -7,10 +7,13 @@ contract OverrideCTFChallenge is Challenge {
     error OverrideCTFChallenge__AlreadyMinted();
 
     string constant BLANK_TWITTER_HANDLE = "";
+    string constant BLANK_IMAGE_URI = "";
+    string constant ATTRIBUTE = "Getting learned!";
+    string constant DESCRIPTION = "This is a simple CTF challenge.";
 
     bool s_minted;
 
-    constructor(address registry) Challenge(registry) {
+    constructor(address registry) Challenge(registry, ATTRIBUTE, DESCRIPTION, BLANK_IMAGE_URI) {
         s_minted = false;
     }
 
@@ -26,15 +29,6 @@ contract OverrideCTFChallenge is Challenge {
         _updateAndRewardSolver(BLANK_TWITTER_HANDLE);
     }
 
-    function attribute() external pure override returns (string memory) {
-        return "Getting learned!";
-    }
-
-    function description() external pure override returns (string memory) {
-        return "This is a simple CTF challenge.";
-    }
-
-    function specialImage() external pure returns (string memory) {
-        return BLANK_TWITTER_HANDLE;
-    }
+    // Add this so forge coverage thinks this is a test and should skip
+    function test() public {}
 }

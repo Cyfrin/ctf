@@ -22,8 +22,6 @@ abstract contract CTFRegistry is ERC721, Ownable, ICTFRegistry {
     //////////////////////
     // State Variables  //
     //////////////////////
-    string internal s_baseTokenImageUri = "ipfs://QmZg79jdDNBTi3fxwnjXTvbM9Gtd1C84Axo55Ht2kYCeDH";
-
     uint256 private s_tokenCounter;
     mapping(uint256 tokenId => address challengeContract) private s_tokenIdToChallengeContract;
     mapping(address user => mapping(address challenge => bool hasSolved)) private s_userToChallengeToHasSolved;
@@ -88,15 +86,6 @@ abstract contract CTFRegistry is ERC721, Ownable, ICTFRegistry {
     }
 
     /*
-     * @dev adds a contract to the list of challenge contracts.
-     * @param newUri - The new base URI to use for the token image.
-     */
-    function changeBaseUri(string memory newUri) external onlyOwner {
-        s_baseTokenImageUri = newUri;
-        emit BaseTokenImageUriChanged(newUri);
-    }
-
-    /*
      * @dev This function is used to mint an NFT for a challenge contract.
      * Once a challenge contract is solved, the challenge contract should call
      * this function to mint an NFT for the user.
@@ -139,9 +128,7 @@ abstract contract CTFRegistry is ERC721, Ownable, ICTFRegistry {
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         IChallenge courseChallenge = IChallenge(s_tokenIdToChallengeContract[tokenId]);
         // check to see if the challenge has a special image using a string comparison
-        string memory imageUriOfTokenId = keccak256(bytes(courseChallenge.specialImage())) != keccak256(bytes(""))
-            ? courseChallenge.specialImage()
-            : s_baseTokenImageUri;
+        string memory imageUriOfTokenId = courseChallenge.imageUri();
 
         string memory attribute = keccak256(bytes(courseChallenge.attribute())) != keccak256(bytes(""))
             ? courseChallenge.attribute()
