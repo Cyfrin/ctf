@@ -91,6 +91,7 @@ abstract contract CTFRegistry is ERC721, Ownable, ICTFRegistry {
      */
     function mintNft(address receiver, string memory twitterHandle)
         external
+        virtual
         onlyChallengeContract(msg.sender)
         returns (uint256)
     {
