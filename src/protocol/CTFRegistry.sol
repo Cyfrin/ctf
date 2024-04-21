@@ -2,7 +2,7 @@
 pragma solidity ^0.8.18;
 
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {Ownable2Step, Ownable} from "@openzeppelin/contracts/access/Ownable2Step.sol";
 import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
 import {ICTFRegistry} from "../interfaces/ICTFRegistry.sol";
 import {IChallenge} from "../interfaces/IChallenge.sol";
@@ -18,7 +18,7 @@ import {IChallenge} from "../interfaces/IChallenge.sol";
  *
  * Each challenge needs to be added to this contract, and only then can an NFT be minted.
  */
-abstract contract CTFRegistry is ERC721, Ownable, ICTFRegistry {
+abstract contract CTFRegistry is ERC721, Ownable2Step, ICTFRegistry {
     /*//////////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////////*/
